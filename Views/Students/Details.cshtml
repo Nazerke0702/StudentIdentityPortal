@@ -1,0 +1,3 @@
+@model StudentIdentityPortal.ViewModels.StudentViewModel
+@{ ViewData["Title"] = "Student profile"; }
+<section class="student-detail page-shell"><a class="back-link" asp-action="Index">← Back to students</a><article class="detail-card"><span class="detail-avatar">@Model.FirstName[..1].ToUpperInvariant()@Model.LastName[..1].ToUpperInvariant()</span><span class="status-pill"><span></span> STUDENT</span><h1>@Model.FirstName @Model.LastName</h1><a href="mailto:@Model.Email" class="detail-email">@Model.Email</a><div class="welcome-divider"></div><div class="member-line"><span>Joined the portal</span><strong>@Model.CreatedAt.ToLocalTime().ToString("MMMM yyyy")</strong></div></article></section>

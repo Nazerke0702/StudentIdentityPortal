@@ -1,0 +1,40 @@
+@{
+  ViewData["Title"] = "Welcome";
+}
+<section class="hero page-shell">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR CAMPUS, IN ONE PLACE</div>
+    <h1>Make your next<br />chapter <span class="text-accent">count.</span></h1>
+    <p class="hero-lede">A thoughtful home for your student identity. Keep your details close, find your campus community, and move forward with confidence.</p>
+    <div class="hero-actions">
+      @if (User.Identity?.IsAuthenticated == true)
+      {
+        <a class="button button-primary button-large" asp-controller="Dashboard" asp-action="Index">Open your dashboard <span aria-hidden="true">↗</span></a>
+      }
+      else
+      {
+        <a class="button button-primary button-large" asp-controller="Account" asp-action="Register">Create your account <span aria-hidden="true">↗</span></a>
+        <a class="button button-outline button-large" asp-controller="Account" asp-action="Login">I already have an account</a>
+      }
+    </div>
+    <div class="trust-row"><div class="avatar-stack"><span>N</span><span>A</span><span>S</span></div><span>Built around your student journey</span><span class="trust-check">✓</span></div>
+  </div>
+  <div class="hero-art" aria-label="Abstract student portal dashboard preview">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+    <div class="floating-chip chip-top"><span class="chip-icon chip-lilac">✦</span><span><strong>One clear identity</strong><small>Your campus profile</small></span><span class="chip-check">✓</span></div>
+    <div class="profile-card">
+      <div class="profile-card-head"><span class="mini-brand">n<span>.</span></span><span class="online-dot">● <small>STUDENT PORTAL</small></span></div>
+      <div class="profile-photo">N<span class="photo-spark">✳</span></div>
+      <div class="profile-intro"><span class="status-pill"><span></span> VERIFIED STUDENT</span><h2>Your story<br />starts here.</h2><p>Find your place. Shape what comes next.</p></div>
+      <div class="profile-card-foot"><div><small>YOUR SPACE</small><strong>Ready when you are</strong></div><span class="arrow-circle">↗</span></div>
+    </div>
+    <div class="floating-chip chip-bottom"><span class="chip-icon chip-green">↗</span><span><strong>Made for progress</strong><small>A space that moves with you</small></span></div>
+    <div class="art-caption">A little more clarity for the road ahead <span>✳</span></div>
+  </div>
+</section>
+<section class="feature-strip page-shell" aria-label="Portal features">
+  <div class="feature"><span class="feature-icon feature-purple">01</span><div><strong>Your student profile</strong><p>One trusted place for your details.</p></div></div>
+  <div class="feature"><span class="feature-icon feature-peach">02</span><div><strong>A connected community</strong><p>Discover fellow students with ease.</p></div></div>
+  <div class="feature"><span class="feature-icon feature-mint">03</span><div><strong>Privacy by design</strong><p>Your information stays protected.</p></div></div>
+</section>
+<section class="closing-cta page-shell"><div><div class="eyebrow">START WHERE YOU ARE</div><h2>There’s room for you here.</h2><p>Set up your student profile in just a few minutes.</p></div><a class="button button-dark button-large" asp-controller="Account" asp-action="Register">Join the portal <span aria-hidden="true">↗</span></a></section>

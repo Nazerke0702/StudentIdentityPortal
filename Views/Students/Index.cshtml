@@ -1,0 +1,6 @@
+@model IEnumerable<StudentIdentityPortal.ViewModels.StudentViewModel>
+@{ ViewData["Title"] = "Students"; }
+<section class="content-page page-shell"><div class="page-heading"><div><div class="eyebrow">CAMPUS COMMUNITY</div><h1>Meet your <span class="text-accent">people.</span></h1><p>A directory of students building their next chapter.</p></div><span class="count-pill">@Model.Count() students</span></div>
+  <div class="student-grid">@foreach (var student in Model) { <a class="student-card" asp-action="Details" asp-route-id="@student.Id"><span class="student-avatar">@student.FirstName[..1].ToUpperInvariant()@student.LastName[..1].ToUpperInvariant()</span><span class="student-info"><strong>@student.FirstName @student.LastName</strong><small>@student.Email</small></span><span class="student-arrow">↗</span></a> }</div>
+  @if (!Model.Any()) { <div class="empty-state compact"><span class="empty-icon">✳</span><h2>Your community is just getting started.</h2><p>New students will show up here as they join.</p></div> }
+</section>

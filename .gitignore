@@ -1,0 +1,23 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+.vs/
+.headless-edge/
+TestResults/
+coverage/
+
+## local data and secrets
+*.db
+*.db-shm
+*.db-wal
+appsettings.*.local.json
+secrets.json
+
+## IDE / OS
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
