@@ -7,7 +7,7 @@ using StudentIdentityPortal.ViewModels;
 
 namespace StudentIdentityPortal.Controllers;
 
-[Authorize(Roles = RoleNames.Admin + "," + RoleNames.Student)]
+[Authorize(Roles = RoleNames.Admin)]
 public class StudentsController(UserManager<ApplicationUser> users) : Controller
 {
     public async Task<IActionResult> Index()

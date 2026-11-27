@@ -1,10 +1,11 @@
+@{ var currentLanguage = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName; }
 <!DOCTYPE html>
-<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
+<html lang="@currentLanguage">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f8fafc" />
-  <title>@ViewData["Title"] · Nazerke</title>
+  <title>@ViewData["Title"] · @UiText.Get("site.title")</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -15,39 +16,42 @@
     <div class="topbar-inner">
       <a class="brand" asp-controller="Home" asp-action="Index" aria-label="Nazerke home"><span class="brand-mark">N</span><span>nazerke<span class="brand-dot">.</span></span></a>
       <nav class="main-nav" aria-label="Main navigation">
-        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Index">@UiText.Get("nav.home")</a>
         @if (User.Identity?.IsAuthenticated == true)
         {
-          <a asp-controller="Dashboard" asp-action="Index">Dashboard</a>
-          <a asp-controller="Students" asp-action="Index">Students</a>
-          <a asp-controller="Profile" asp-action="Index">Profile</a>
-          @if (User.IsInRole("Admin")) { <a asp-controller="Admin" asp-action="Index">Admin</a> }
+          <a asp-controller="Dashboard" asp-action="Index">@UiText.Get("nav.dashboard")</a>
+          <a asp-controller="Profile" asp-action="Index">@UiText.Get("nav.profile")</a>
+          @if (User.IsInRole("Admin"))
+          {
+            <a asp-controller="Admin" asp-action="Index">@UiText.Get("nav.admin")</a>
+            <a asp-controller="Students" asp-action="Index">@UiText.Get("students.title")</a>
+          }
         }
       </nav>
       <div class="nav-actions">
         <form asp-controller="Home" asp-action="SetLanguage" method="post" class="language-form">
           <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
           <select name="culture" aria-label="Language" onchange="this.form.submit()">
-            <option value="en" selected="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en")">EN</option>
-            <option value="kk" selected="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "kk")">ҚАЗ</option>
-            <option value="ru" selected="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ru")">РУС</option>
+            <option value="en" selected="@(currentLanguage == "en" ? "selected" : null)">@UiText.Get("select.en")</option>
+            <option value="kk" selected="@(currentLanguage == "kk" ? "selected" : null)">@UiText.Get("select.kk")</option>
+            <option value="ru" selected="@(currentLanguage == "ru" ? "selected" : null)">@UiText.Get("select.ru")</option>
           </select>
         </form>
         <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark theme" title="Toggle theme"><span aria-hidden="true">◐</span></button>
         @if (User.Identity?.IsAuthenticated == true)
         {
-          <form asp-controller="Account" asp-action="Logout" method="post"><button class="button button-small button-quiet" type="submit">Sign out</button></form>
+          <form asp-controller="Account" asp-action="Logout" method="post"><button class="button button-small button-quiet" type="submit">@UiText.Get("nav.signout")</button></form>
         }
         else
         {
-          <a class="button button-small button-quiet desktop-signin" asp-controller="Account" asp-action="Login">Sign in</a>
-          <a class="button button-small button-primary" asp-controller="Account" asp-action="Register">Get started <span aria-hidden="true">↗</span></a>
+          <a class="button button-small button-quiet desktop-signin" asp-controller="Account" asp-action="Login">@UiText.Get("nav.signin")</a>
+          <a class="button button-small button-primary" asp-controller="Account" asp-action="Register">@UiText.Get("nav.getstarted") <span aria-hidden="true">→</span></a>
         }
       </div>
     </div>
   </header>
   <main>@RenderBody()</main>
-  <footer class="site-footer"><div class="footer-inner"><a class="brand brand-footer" asp-controller="Home" asp-action="Index"><span class="brand-mark">N</span><span>nazerke<span class="brand-dot">.</span></span></a><span>Student Identity Portal · Week 5</span><span>Made for learning, designed for people.</span></div></footer>
+  <footer class="site-footer"><div class="footer-inner"><a class="brand brand-footer" asp-controller="Home" asp-action="Index"><span class="brand-mark">N</span><span>nazerke<span class="brand-dot">.</span></span></a><span>@UiText.Get("footer.course")</span><span>@UiText.Get("footer.tagline")</span></div></footer>
   <script src="~/lib/jquery/dist/jquery.min.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
   @await RenderSectionAsync("Scripts", required: false)

@@ -15,8 +15,8 @@ public class DashboardController(UserManager<ApplicationUser> users) : Controlle
         var user = await users.GetUserAsync(User);
         if (user is null) return Challenge();
         var isAdmin = await users.IsInRoleAsync(user, RoleNames.Admin);
-        var studentCount = await users.GetUsersInRoleAsync(RoleNames.Student);
+        var studentCount = isAdmin ? (await users.GetUsersInRoleAsync(RoleNames.Student)).Count : 0;
         return View(new DashboardViewModel($"{user.FirstName} {user.LastName}", user.Email ?? string.Empty,
-            isAdmin ? RoleNames.Admin : RoleNames.Student, user.CreatedAt, studentCount.Count));
+            isAdmin ? RoleNames.Admin : RoleNames.Student, user.CreatedAt, studentCount));
     }
 }

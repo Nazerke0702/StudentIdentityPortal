@@ -1,10 +1,15 @@
 @model StudentIdentityPortal.ViewModels.LoginViewModel
-@{ ViewData["Title"] = "Sign in"; }
-<section class="auth-shell auth-login page-shell"><div class="auth-aside"><div class="eyebrow">WELCOME BACK</div><h1>Your space<br />is right <span class="text-accent">here.</span></h1><p>Pick up where you left off and keep your student journey moving.</p><div class="aside-note"><span>↗</span><div><strong>Everything in its place</strong><small>Your profile, your people, your next step.</small></div></div><div class="aside-decoration">N<span>.</span></div></div><div class="form-card"><div class="form-heading"><span class="form-kicker">GOOD TO SEE YOU</span><h2>Sign in</h2><p>New to the portal? <a asp-action="Register">Create an account</a></p></div><form asp-action="Login" method="post" class="form-stack">
-  <div asp-validation-summary="ModelOnly" class="validation-summary"></div><input asp-for="ReturnUrl" type="hidden" />
-  <div class="field"><label asp-for="Email">University email</label><input asp-for="Email" autocomplete="username" placeholder="you@university.edu" /><span asp-validation-for="Email" class="field-error"></span></div>
-  <div class="field"><div class="label-row"><label asp-for="Password">Password</label><a href="#password-help" class="small-link">Need help?</a></div><div class="password-wrap"><input asp-for="Password" autocomplete="current-password" placeholder="Enter your password" /><button type="button" class="password-toggle" aria-label="Show password">Show</button></div><span asp-validation-for="Password" class="field-error"></span></div>
-  <label class="check-label"><input asp-for="RememberMe" /> <span>Keep me signed in on this device</span></label>
-  <button class="button button-primary button-full button-large" type="submit">Sign in to your account <span aria-hidden="true">↗</span></button><p id="password-help" class="form-legal">If you can’t access your account, contact your campus administrator.</p>
-</form></div></section>
+@{ ViewData["Title"] = UiText.Get("login.title"); }
+<section class="auth-shell auth-login page-shell">
+  <div class="auth-aside"><div class="eyebrow">@UiText.Get("login.welcome")</div><h1>@UiText.Get("login.welcome")<br />@UiText.Get("dash.studentSpace")</h1><p>@UiText.Get("dash.subtitle")</p><div class="aside-note"><span>✓</span><div><strong>@UiText.Get("home.feature1")</strong><small>@UiText.Get("home.feature1desc")</small></div></div><div class="aside-decoration">N<span>.</span></div></div>
+  <div class="form-card"><div class="form-heading"><span class="form-kicker">@UiText.Get("login.welcome")</span><h2>@UiText.Get("login.title")</h2><p>@UiText.Get("login.newUser") <a asp-action="Register">@UiText.Get("nav.getstarted")</a></p></div>
+    <form asp-action="Login" method="post" class="form-stack">
+      <div asp-validation-summary="ModelOnly" class="validation-summary"></div><input asp-for="ReturnUrl" type="hidden" />
+      <div class="field"><label asp-for="Email">@UiText.Get("login.email")</label><input asp-for="Email" autocomplete="username" placeholder="you@university.edu" /><span asp-validation-for="Email" class="field-error"></span></div>
+      <div class="field"><div class="label-row"><label asp-for="Password">@UiText.Get("login.password")</label></div><div class="password-wrap"><input asp-for="Password" autocomplete="current-password" /><button type="button" class="password-toggle" aria-label="Show password">@UiText.Get("login.password")</button></div><span asp-validation-for="Password" class="field-error"></span></div>
+      <label class="check-label"><input asp-for="RememberMe" /> <span>@UiText.Get("login.remember")</span></label>
+      <button class="button button-primary button-full button-large" type="submit">@UiText.Get("login.submit") <span aria-hidden="true">→</span></button><p id="password-help" class="form-legal">@UiText.Get("login.needHelp")</p>
+    </form>
+  </div>
+</section>
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -1,40 +1,38 @@
-@{
-  ViewData["Title"] = "Welcome";
-}
+@{ ViewData["Title"] = UiText.Get("site.title"); }
 <section class="hero page-shell">
   <div class="hero-copy">
-    <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR CAMPUS, IN ONE PLACE</div>
-    <h1>Make your next<br />chapter <span class="text-accent">count.</span></h1>
-    <p class="hero-lede">A thoughtful home for your student identity. Keep your details close, find your campus community, and move forward with confidence.</p>
+    <div class="eyebrow"><span class="eyebrow-dot"></span> @UiText.Get("home.eyebrow")</div>
+    <h1>@UiText.Get("home.heading1")<br />@UiText.Get("home.heading2") <span class="text-accent">@UiText.Get("home.heading3")</span></h1>
+    <p class="hero-lede">@UiText.Get("home.lede")</p>
     <div class="hero-actions">
       @if (User.Identity?.IsAuthenticated == true)
       {
-        <a class="button button-primary button-large" asp-controller="Dashboard" asp-action="Index">Open your dashboard <span aria-hidden="true">↗</span></a>
+        <a class="button button-primary button-large" asp-controller="Dashboard" asp-action="Index">@UiText.Get("home.openDashboard") <span aria-hidden="true">→</span></a>
       }
       else
       {
-        <a class="button button-primary button-large" asp-controller="Account" asp-action="Register">Create your account <span aria-hidden="true">↗</span></a>
-        <a class="button button-outline button-large" asp-controller="Account" asp-action="Login">I already have an account</a>
+        <a class="button button-primary button-large" asp-controller="Account" asp-action="Register">@UiText.Get("home.create") <span aria-hidden="true">→</span></a>
+        <a class="button button-outline button-large" asp-controller="Account" asp-action="Login">@UiText.Get("home.already")</a>
       }
     </div>
-    <div class="trust-row"><div class="avatar-stack"><span>N</span><span>A</span><span>S</span></div><span>Built around your student journey</span><span class="trust-check">✓</span></div>
+    <div class="trust-row"><div class="avatar-stack"><span>N</span><span>A</span><span>S</span></div><span>@UiText.Get("home.trust")</span><span class="trust-check">✓</span></div>
   </div>
-  <div class="hero-art" aria-label="Abstract student portal dashboard preview">
+  <div class="hero-art" aria-label="Student portal preview">
     <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
-    <div class="floating-chip chip-top"><span class="chip-icon chip-lilac">✦</span><span><strong>One clear identity</strong><small>Your campus profile</small></span><span class="chip-check">✓</span></div>
+    <div class="floating-chip chip-top"><span class="chip-icon chip-lilac">✓</span><span><strong>@UiText.Get("home.identity")</strong><small>@UiText.Get("home.campusProfile")</small></span><span class="chip-check">✓</span></div>
     <div class="profile-card">
       <div class="profile-card-head"><span class="mini-brand">n<span>.</span></span><span class="online-dot">● <small>STUDENT PORTAL</small></span></div>
-      <div class="profile-photo">N<span class="photo-spark">✳</span></div>
-      <div class="profile-intro"><span class="status-pill"><span></span> VERIFIED STUDENT</span><h2>Your story<br />starts here.</h2><p>Find your place. Shape what comes next.</p></div>
-      <div class="profile-card-foot"><div><small>YOUR SPACE</small><strong>Ready when you are</strong></div><span class="arrow-circle">↗</span></div>
+      <div class="profile-photo">N<span class="photo-spark">✦</span></div>
+      <div class="profile-intro"><span class="status-pill"><span></span> @UiText.Get("home.verifiedStudent")</span><h2>@UiText.Get("home.story")</h2><p>@UiText.Get("home.findPlace")</p></div>
+      <div class="profile-card-foot"><div><small>@UiText.Get("home.space")</small><strong>@UiText.Get("home.ready")</strong></div><span class="arrow-circle">→</span></div>
     </div>
-    <div class="floating-chip chip-bottom"><span class="chip-icon chip-green">↗</span><span><strong>Made for progress</strong><small>A space that moves with you</small></span></div>
-    <div class="art-caption">A little more clarity for the road ahead <span>✳</span></div>
+    <div class="floating-chip chip-bottom"><span class="chip-icon chip-green">→</span><span><strong>@UiText.Get("home.progress")</strong><small>@UiText.Get("home.moves")</small></span></div>
+    <div class="art-caption">@UiText.Get("home.caption") <span>✦</span></div>
   </div>
 </section>
 <section class="feature-strip page-shell" aria-label="Portal features">
-  <div class="feature"><span class="feature-icon feature-purple">01</span><div><strong>Your student profile</strong><p>One trusted place for your details.</p></div></div>
-  <div class="feature"><span class="feature-icon feature-peach">02</span><div><strong>A connected community</strong><p>Discover fellow students with ease.</p></div></div>
-  <div class="feature"><span class="feature-icon feature-mint">03</span><div><strong>Privacy by design</strong><p>Your information stays protected.</p></div></div>
+  <div class="feature"><span class="feature-icon feature-purple">01</span><div><strong>@UiText.Get("home.feature1")</strong><p>@UiText.Get("home.feature1desc")</p></div></div>
+  <div class="feature"><span class="feature-icon feature-peach">02</span><div><strong>@UiText.Get("home.feature2")</strong><p>@UiText.Get("home.feature2desc")</p></div></div>
+  <div class="feature"><span class="feature-icon feature-mint">03</span><div><strong>@UiText.Get("home.feature3")</strong><p>@UiText.Get("home.feature3desc")</p></div></div>
 </section>
-<section class="closing-cta page-shell"><div><div class="eyebrow">START WHERE YOU ARE</div><h2>There’s room for you here.</h2><p>Set up your student profile in just a few minutes.</p></div><a class="button button-dark button-large" asp-controller="Account" asp-action="Register">Join the portal <span aria-hidden="true">↗</span></a></section>
+<section class="closing-cta page-shell"><div><div class="eyebrow">@UiText.Get("home.cta.eyebrow")</div><h2>@UiText.Get("home.cta.heading")</h2><p>@UiText.Get("home.cta.desc")</p></div><a class="button button-dark button-large" asp-controller="Account" asp-action="Register">@UiText.Get("home.join") <span aria-hidden="true">→</span></a></section>

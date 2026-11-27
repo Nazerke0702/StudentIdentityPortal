@@ -1,7 +1,27 @@
 @model StudentIdentityPortal.ViewModels.DashboardViewModel
-@{ ViewData["Title"] = "Your dashboard"; }
-<section class="dashboard page-shell"><div class="dashboard-top"><div><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR CAMPUS SPACE</div><h1>Good to see you, <span class="text-accent">@Model.DisplayName.Split(' ')[0].</span></h1><p>Your student journey, all in one place.</p></div><span class="role-badge">● @Model.Role</span></div>
+@{ ViewData["Title"] = UiText.Get("nav.dashboard"); }
+<section class="dashboard page-shell">
+  <div class="dashboard-top">
+    <div><div class="eyebrow"><span class="eyebrow-dot"></span> @UiText.Get("dash.eyebrow")</div><h1>@UiText.Get("dash.greeting") <span class="text-accent">@Model.DisplayName.Split(' ')[0].</span></h1><p>@UiText.Get("dash.subtitle")</p></div>
+    <span class="role-badge">@Model.Role</span>
+  </div>
   @if (TempData["Notice"] is string notice) { <div class="notice">@notice</div> }
-  <div class="dashboard-grid"><article class="welcome-panel"><div class="panel-top"><span class="panel-overline">YOUR IDENTITY</span><span class="verified">✓ VERIFIED</span></div><div class="large-avatar">@Model.DisplayName[..1].ToUpperInvariant()</div><h2>@Model.DisplayName</h2><p>@Model.Email</p><div class="welcome-divider"></div><div class="member-line"><span>Member since</span><strong>@Model.CreatedAt.ToLocalTime().ToString("MMMM yyyy")</strong></div><a class="text-link" asp-controller="Profile" asp-action="Index">Edit your profile <span>↗</span></a></article>
-  <div class="dashboard-side"><article class="quick-card"><div class="quick-icon quick-purple">✳</div><div><span class="panel-overline">YOUR COMMUNITY</span><h3>@Model.StudentCount students</h3><p>Get to know the people sharing your campus.</p><a class="text-link" asp-controller="Students" asp-action="Index">Explore students <span>↗</span></a></div></article><article class="quick-card quick-card-warm"><div class="quick-icon quick-peach">↗</div><div><span class="panel-overline">A GOOD NEXT STEP</span><h3>Make it yours</h3><p>Keep your name and profile details up to date.</p><a class="text-link" asp-controller="Profile" asp-action="Index">Update profile <span>↗</span></a></div></article></div></div>
+  <div class="dashboard-grid">
+    <article class="welcome-panel">
+      <div class="panel-top"><span class="panel-overline">@UiText.Get("dash.identity")</span><span class="verified">✓ @UiText.Get("dash.verified")</span></div>
+      <div class="large-avatar">@Model.DisplayName[..1].ToUpperInvariant()</div><h2>@Model.DisplayName</h2><p>@Model.Email</p>
+      <div class="welcome-divider"></div><div class="member-line"><span>@UiText.Get("dash.memberSince")</span><strong>@Model.CreatedAt.ToLocalTime().ToString("MMMM yyyy")</strong></div>
+      <a class="text-link" asp-controller="Profile" asp-action="Index">@UiText.Get("dash.editProfile") <span>→</span></a>
+    </article>
+    <div class="dashboard-side">
+      @if (User.IsInRole("Admin"))
+      {
+        <article class="quick-card"><div class="quick-icon quick-purple">✓</div><div><span class="panel-overline">@UiText.Get("dash.studentSpace")</span><h3>@Model.StudentCount @UiText.Get("students.title").ToLowerInvariant()</h3><p>@UiText.Get("dash.adminHint")</p><a class="text-link" asp-controller="Admin" asp-action="Index">@UiText.Get("dash.openAdmin") <span>→</span></a></div></article>
+      }
+      else
+      {
+        <article class="quick-card quick-card-warm"><div class="quick-icon quick-peach">→</div><div><span class="panel-overline">@UiText.Get("dash.studentSpace")</span><h3>@UiText.Get("dash.keepProfile")</h3><p>@UiText.Get("dash.profileHint")</p><a class="text-link" asp-controller="Profile" asp-action="Index">@UiText.Get("dash.updateProfile") <span>→</span></a></div></article>
+      }
+    </div>
+  </div>
 </section>

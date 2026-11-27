@@ -17,7 +17,14 @@ public class HomeController : Controller
         if (culture is not ("en" or "kk" or "ru")) culture = "en";
         Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
             CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), IsEssential = true, SameSite = SameSiteMode.Lax });
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                IsEssential = true,
+                HttpOnly = true,
+                Path = "/",
+                SameSite = SameSiteMode.Lax
+            });
         return LocalRedirect(Url.IsLocalUrl(returnUrl) ? returnUrl! : Url.Action(nameof(Index))!);
     }
 
