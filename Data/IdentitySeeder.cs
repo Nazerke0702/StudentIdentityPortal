@@ -6,7 +6,7 @@ namespace StudentIdentityPortal.Data;
 
 public static class IdentitySeeder
 {
-    public static async Task SeedAsync(IServiceProvider services, IConfiguration configuration)
+    public static async Task SeedAsync(IServiceProvider services, IConfiguration configuration, IHostEnvironment environment)
     {
         var roles = services.GetRequiredService<RoleManager<IdentityRole>>();
         foreach (var role in new[] { RoleNames.Admin, RoleNames.Student })
@@ -16,6 +16,8 @@ public static class IdentitySeeder
                 if (!result.Succeeded)
                     throw new InvalidOperationException($"Could not create the {role} role: " + string.Join("; ", result.Errors.Select(e => e.Description)));
             }
+
+        if (!environment.IsDevelopment()) return;
 
         var email = configuration["Admin:Email"];
         var password = configuration["Admin:Password"];

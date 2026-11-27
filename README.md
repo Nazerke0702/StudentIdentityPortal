@@ -45,6 +45,65 @@ The local database file is student-identity-portal.db in the app working directo
 
 The server enforces these permissions with Authorize, Authorize(Roles = ...), and AllowAnonymous. Hiding a link in the UI is never the access control. Every state-changing form uses an antiforgery token. No password is stored or logged by application code; Identity handles password hashing.
 
+## ASP.NET Core Identity
+
+ApplicationUser extends IdentityUser with first name, last name, and creation time. AppDbContext uses IdentityDbContext<ApplicationUser>, backed by EF Core and SQLite. Identity's UserManager, SignInManager, RoleManager, password hasher, lockout, cookies, and role checks handle identity operations.
+
+## Registration
+
+The public registration form accepts name, email, password, and confirmation only. The POST action validates ModelState, creates the user with UserManager, and assigns the Student role server-side. A caller-supplied Role field is ignored. Unique email and username conflicts return validation feedback. Registration POST requires an antiforgery token.
+
+## Login
+
+Sign-in uses SignInManager.PasswordSignInAsync with lockout-on-failure. Unknown users and invalid passwords receive the same message. Login redirects only to local ReturnUrl values; external values fall back to the dashboard.
+
+## Student Role
+
+Student users can open Dashboard, Students, and Profile. The dashboard and student-directory controllers require the Admin or Student role. Students cannot open Admin routes or submit student-management actions.
+
+## Administrator Role
+
+Admin management routes require the Admin role at the controller level. Admin can list students and remove a student with a POST action plus an antiforgery token. The startup seeder always ensures the two role records exist, but it creates an Admin account only in Development and only when credentials are configured through User Secrets or environment variables.
+
+## Authorization
+
+Authorization runs on the server. Admin routes use the Admin role requirement; Dashboard and Students routes allow only Admin or Student. A hidden navigation link is not treated as a security boundary. Integration tests send direct HTTP requests to protected routes and actions.
+
+## Logout Security
+
+Logout accepts POST only and calls SignInManager.SignOutAsync. A GET request does not log out. The integration tests verify that a valid POST signs the user out, a missing antiforgery token is rejected, a GET preserves the session, and protected pages require sign-in afterwards.
+
+## Anti-forgery Protection
+
+All state-changing MVC forms use Razor form tag helpers, which emit antiforgery tokens. Registration, profile update, language selection, logout, and admin removal POSTs validate their token. Tests cover missing tokens on registration and logout.
+
+## User Secrets
+
+Configure a local Development administrator without placing its password in source or appsettings.json:
+
+~~~powershell
+dotnet user-secrets set "Admin:Email" "admin@example.edu" --project .\StudentIdentityPortal.csproj
+dotnet user-secrets set "Admin:Password" "Use-A-Unique-Strong-Password!" --project .\StudentIdentityPortal.csproj
+~~~
+
+The Admin account seeder is Development-only. It will not create an Admin account in Testing or Production, even if those settings are supplied.
+
+## Testing Scenarios
+
+The xUnit project uses WebApplicationFactory with an isolated in-memory SQLite database. It covers guests, registration, role assignment and role-field spoofing, duplicate identity, login failures, student access, Admin access, Admin actions, antiforgery, logout, safe redirects, and non-Development admin seeding. See docs/TestReport.md for test IDs, actual results, and screenshot availability.
+
+## Screenshot Evidence
+
+The existing real home-page capture is docs/screenshots/01-home.png. The Playwright capture script produces the remaining ten requested images. It starts the app with a unique temporary SQLite file and disposable Development credentials, so it does not use the existing development database. It does not capture passwords or cookies. Install Node.js, then run:
+
+~~~powershell
+dotnet restore .\StudentIdentityPortal.csproj
+dotnet build .\StudentIdentityPortal.csproj --maxcpucount:1
+pwsh -ExecutionPolicy Bypass -File .\scripts\Capture-Evidence.ps1
+~~~
+
+Playwright and its Chromium browser are downloaded by the script on first run. Capture results should be reviewed and personal information redacted before committing.
+
 ## Requirements
 
 - .NET 10 SDK
@@ -58,7 +117,8 @@ From the repository root:
 
 ~~~powershell
 dotnet tool restore
-dotnet restore
+dotnet restore .\StudentIdentityPortal.csproj
+dotnet restore .\StudentIdentityPortal.Tests\StudentIdentityPortal.Tests.csproj
 dotnet build
 dotnet run --project .\StudentIdentityPortal.csproj
 ~~~
@@ -93,15 +153,18 @@ dotnet ef database update --project .\StudentIdentityPortal.csproj
 
 If InitialCreate already exists, do not add it again.
 
-## Tests and manual checks
+## Running Tests
 
-Run automated validation tests with:
+Restore, build, and run the isolated integration and view-model tests:
 
 ~~~powershell
+dotnet restore .\StudentIdentityPortal.csproj
+dotnet restore .\StudentIdentityPortal.Tests\StudentIdentityPortal.Tests.csproj
+dotnet build .\StudentIdentityPortal.slnx --maxcpucount:1
 dotnet test .\StudentIdentityPortal.slnx --maxcpucount:1
 ~~~
 
-Manual cases and a results log template are in docs/testing.md. Do not record a case as passed until it has actually been run. Save genuine, redacted browser screenshots to docs/screenshots/ when capturing them locally.
+The tests use a named in-memory SQLite database and do not connect to or reset student-identity-portal.db. The actual run results are recorded in docs/TestReport.md. Manual UI evidence is separate; do not mark a browser screenshot as captured until the Playwright script has completed.
 
 ## Security notes
 
@@ -116,7 +179,7 @@ Manual cases and a results log template are in docs/testing.md. Do not record a 
 
 ## Screenshots
 
-The home page capture is in docs/screenshots/01-home.png. Capture real registration, login, student dashboard, profile, directory, access denied, admin dashboard, and account removal states locally after the matching tests pass. Use test accounts only and redact personal information before committing.
+The only screenshot currently captured is docs/screenshots/01-home.png. Other requested images are not linked here until the Playwright workflow produces them.
 
 ## Conclusion
 

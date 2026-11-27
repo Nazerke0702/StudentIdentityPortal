@@ -2,13 +2,16 @@
 
 ## Automated tests
 
-Run from the repository root:
+Run from the repository root. These tests use WebApplicationFactory and an isolated in-memory SQLite database; they do not use or reset the development database:
 
 ~~~powershell
+dotnet restore .\StudentIdentityPortal.csproj
+dotnet restore .\StudentIdentityPortal.Tests\StudentIdentityPortal.Tests.csproj
+dotnet build .\StudentIdentityPortal.slnx --maxcpucount:1
 dotnet test .\StudentIdentityPortal.slnx --maxcpucount:1
 ~~~
 
-The test project checks the registration view model's valid input, password policy, and password confirmation. These are unit-level checks; they do not replace browser testing of Identity, cookies, authorization, or SQLite.
+The suite covers MVC endpoints, registration, role assignment, login, role authorization, antiforgery, logout, and return URLs, plus registration view-model validation. Browser screenshots are separate evidence and must not be marked complete until the Playwright script runs successfully.
 
 ## Manual acceptance checklist
 
@@ -29,15 +32,26 @@ Record the actual date, browser, and result after running each case. Leave the r
 
 ## Browser screenshots
 
-Capture real browser states after the matching acceptance case has passed. Suggested names:
+The Playwright automation and isolated-server launcher are in scripts/capture-evidence.mjs and scripts/Capture-Evidence.ps1. Run them from a local PowerShell session:
+
+~~~powershell
+pwsh -ExecutionPolicy Bypass -File .\scripts\Capture-Evidence.ps1
+~~~
+
+The launcher uses a unique temporary SQLite file and temporary Development-only administrator credentials. It does not connect to the project's existing database. npm and Chromium must be downloadable on the machine running the script.
+
+The script captures these real browser states:
 
 - 01-home.png
 - 02-register.png
-- 03-login.png
-- 04-student-dashboard.png
-- 05-student-directory.png
-- 06-access-denied.png
-- 07-admin-dashboard.png
-- 08-admin-delete.png
+- 03-register-validation.png
+- 04-register-success.png
+- 05-login.png
+- 06-login-validation.png
+- 07-student-dashboard.png
+- 08-student-access-denied.png
+- 09-admin-dashboard.png
+- 10-admin-protected-action.png
+- 11-logout.png
 
 Use disposable test accounts and hide personal data. Do not create fabricated screenshots or describe unrun checks as successful.

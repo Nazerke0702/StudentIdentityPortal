@@ -8,6 +8,9 @@ obj/
 .headless-edge/
 TestResults/
 coverage/
+node_modules/
+playwright-report/
+test-results/
 
 ## local data and secrets
 *.db
@@ -15,6 +18,8 @@ coverage/
 *.db-wal
 appsettings.*.local.json
 secrets.json
+.env
+.env.*
 
 ## IDE / OS
 .idea/

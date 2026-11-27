@@ -66,7 +66,7 @@ await using (var scope = app.Services.CreateAsyncScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.MigrateAsync();
-    await IdentitySeeder.SeedAsync(scope.ServiceProvider, app.Configuration);
+    await IdentitySeeder.SeedAsync(scope.ServiceProvider, app.Configuration, app.Environment);
 }
 
 app.Run();
